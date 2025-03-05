@@ -1,0 +1,20 @@
+Author: Adam Hoburg
+Date: 09 May 2024
+
+The purpose of this file is to provide guidance on using the scripts in this optimization folder. Please refer to the README in ajh_swarm_slam folder for guidance on the code for producing RCS-SLAM simulations. The contents here are for post-processing and plotting simulation data. One downfall to the structure of this work is that the simulation and post-processing code was all in python but then the optimization code is written in c++ but then everything is evaluated and plotted back in python. I switched to doing the optimization in c++ because I originally thought I needed to create custom constraints which were easier to do directly in c++. I believe GTSAM includes python wrappers to use the range contraints in python but I didn't have time to convert back to python. 
+
+Another ongoing challenge was that ROS 1 would not save rosbags where I requested in the launch file. They always ended up saved in the ~/.ros folder found in the home folder. That being said, the general work flow ended up being like this: simulation, move rosbags from /home/.ros/ to ~/ajh_swarm_slam/optimization/Data/Current, perform post-processing, perform optimization in c++, then evaluate and plot.
+
+One disclaimer is that when these scripts were written and used I had them in the directory ~/ajh_swarm_slam/optimization and they were looking for data in ~/ajh_swarm_slam/optimization/Data/Current. Many scripts have the option to select which folder you want them to look in other than 'Current' using an -f tag in the argument. However, for better legibility I organized the scripts into the folders you see today so some of the file paths they reference are not accurate.
+
+Folders:
+
+/IROSPlots - This folder just includes the images that were used in the paper submitted to IROS.
+
+/Plotting_Scripts - This folder includes several custom scripts used for producing various plots for evaluation and comparison. Most importantly though are RCS_Plotter.py and DR_Plotter.py. These take the optimized estimates and perform all of the error evaluations the produces the plots. After these scripts are run once the error evaluation data is saved in .csv files to make subsequent plotting much faster. 
+
+/Post_Processing_Scripts - As the name suggests the scripts in this folder are used for post-processing simulation data. First BagPostProc.py is run which converts the rosbags using bagconverter.py to .csv files and also evaluates the communication graph data to determine where one-hop communications took place. In other words, it looks at the communication graph for each node and figures out where relay communications would take place. This produces a list of hop communications which are leveraged in optimization. Second, Stats_Eval.py evaluates the actual noise characteristics between what path the agent followed and what the noisy odometry estimate thought it followed. It is standard in SLAM literature to assume the noise characteristics of the sensors is known. The results of this noise evaluation are then used to update the pose graph data which is saved in G2O format for compatibility with GTSAM. CommGraph_Builder.py is a useful script that takes in ground truth data and produces communication graphs at a given node interval. This is helpful for testing inter-robot communications at different ranges. The scripts metrics.py and getTheta.py are just dependencies used by the previously mentioned files.
+
+/Shell_Scripts - This folder includes a bunch of shell scripts I used to automate several of the tedious processes. Most useful is Move_Proc_Opt_Plot.sh which takes data from a simulation and runs it through the entire workflow all the way to plotting. It moves data from the /.ros folder into the /Data/Current folder then post process, optimizes, and evaluates. Another useful one is Pick_Folder_Proc_OptPlot.sh allows you to declare which /Data/ folder you want it to look at and it'll run the post process, optimization and evaluation/plotting.
+
+/ThesisPlots - This folder just includes images that were used in my thesis.

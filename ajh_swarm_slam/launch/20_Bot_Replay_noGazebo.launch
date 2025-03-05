@@ -1,0 +1,357 @@
+<!-- -->
+<launch>
+  <param name="/use_sim_time" value="false" />
+ 
+  											
+ <!-- yl_max_angle:=5.49779 -->
+ <arg name="lin_noise" default="0.2"/> <!-- 0.5 0.1 -->
+ <arg name="ang_noise" default="0.1"/> <!-- 0.5 0.1 -->
+ <arg name="comm_range" default="1.0"/>
+ <arg name="team_size" default="20"/>
+ <arg name="nodetime" default="3"/>
+ <arg name="det_range" default="2.0"/>
+ <arg name="duration" default="1199"/> <!--5min:299 10min:599 20min: 1199-->
+ <arg name="bag_file" default="Current"/>
+ <arg name="bag_save" default="$(find ajh_swarm_slam)/optimization/Data/Current/"/>
+ <arg name="controller" default="replay_swarm_controller_joy.py"/>
+
+  
+  <!-- BEGIN ROBOT 1-->
+  <group ns="Robot1">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+   <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)" />
+      <param name="ang_noise" type="double" value="$(arg ang_noise)" />
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    
+  </group>
+
+
+  <!-- BEGIN ROBOT 2-->
+  <group ns="Robot2">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 3-->
+  <group ns="Robot3">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+
+  
+<!-- BEGIN ROBOT 4-->
+  <group ns="Robot4">
+        <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 5-->
+  <group ns="Robot5">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>  
+  </group>
+  
+<!-- BEGIN ROBOT 6-->
+  <group ns="Robot6">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 7-->
+  <group ns="Robot7">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 8-->
+  <group ns="Robot8">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+<!-- BEGIN ROBOT 9-->
+  <group ns="Robot9">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>  
+  </group>
+  
+<!-- BEGIN ROBOT 10-->
+  <group ns="Robot10">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+    <!-- BEGIN ROBOT 11-->
+  <group ns="Robot11">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+
+
+  <!-- BEGIN ROBOT 12-->
+  <group ns="Robot12">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+<!-- BEGIN ROBOT 13-->
+  <group ns="Robot13">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+
+  
+<!-- BEGIN ROBOT 14-->
+  <group ns="Robot14">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    
+  </group>
+<!-- BEGIN ROBOT 15-->
+  <group ns="Robot15">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 16-->
+  <group ns="Robot16">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 17-->
+  <group ns="Robot17">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 18-->
+  <group ns="Robot18">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 19-->
+  <group ns="Robot19">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 20-->
+  <group ns="Robot20">
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+
+<!-- BEGIN ROBOT 21 Simulated stationary robot for loop closure NOTE: create_noisy_odometry is replaced-->
+  <group ns="Robot21">
+    <node name="odometry" pkg="ajh_swarm_slam"  type="stationary_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen_stationary.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+
+  
+  <node name="bagplay" pkg="rosbag"  type="play" output="screen" args="--pause $(find ajh_swarm_slam)/optimization/Data/$(arg bag_file)/odom.bag" >
+  </node>
+  
+  <node pkg="rosbag" type="record" name="rosbag_centralgraph"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=centralgraph.bag /central_graph" >
+  </node>
+  
+   <node pkg="rosbag" type="record" name="LC_Nodes"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=LC_Nodes.bag /Robot21/central_graph" >
+  </node>
+ 
+      
+  <node pkg="rosbag" type="record" name="rosbag_noisy_odom"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=noisy_odom.bag /Robot1/noisy_odom /Robot2/noisy_odom /Robot3/noisy_odom /Robot4/noisy_odom /Robot5/noisy_odom /Robot6/noisy_odom /Robot7/noisy_odom /Robot8/noisy_odom /Robot9/noisy_odom /Robot10/noisy_odom /Robot11/noisy_odom /Robot12/noisy_odom /Robot13/noisy_odom /Robot14/noisy_odom /Robot15/noisy_odom /Robot16/noisy_odom /Robot17/noisy_odom /Robot18/noisy_odom /Robot19/noisy_odom /Robot20/noisy_odom /Robot21/noisy_odom" >
+  </node>
+  
+
+</launch>

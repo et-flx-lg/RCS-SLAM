@@ -1,0 +1,510 @@
+<!-- -->
+<launch>
+  <param name="/use_sim_time" value="true" />
+ 
+  <!-- start world  -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find uri_soft_gazebo_differential_drive)/world/arena_10x10.world"/>
+    <arg name="paused" value="true"/>	
+    <!--arena_10x10_obstacles.world arena_10x10.world arena_20x20.world-->
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder
+                       '$(find uri_soft_gazebo_differential_drive)/urdf/differential_drive_cam_lidar_fisheyes.xacro'
+
+with_ydlidar:=true                       	
+with_cam:=false												
+yl_min_range:=0.05
+yl_max_range:=2.0
+yl_samples:=8
+yl_min_angle:=-0.698
+yl_max_angle:=0.698																					with_fisheyes:=false
+with_imu:=false
+											"/>
+ <!-- yl_max_angle:=5.49779 -->
+ <arg name="lin_noise" default="0.5"/> <!-- 0.5 0.1 -->
+ <arg name="ang_noise" default="0.2"/> <!-- 0.5 0.1 -->
+ <arg name="comm_range" default="1.0"/>
+ <arg name="team_size" default="20"/>
+ <arg name="nodetime" default="3"/>
+ <arg name="det_range" default="2.0"/>
+ <arg name="duration" default="1199"/> <!--5min:299 10min:599 20min: 1199-->
+ <arg name="bag_file" default="Current"/>
+ <arg name="bag_save" default="$(find ajh_swarm_slam)/optimization/Data/Current/"/>
+ <arg name="controller" default="replay_swarm_controller_joy.py"/>
+
+  
+  <!-- BEGIN ROBOT 1-->
+  <group ns="Robot1">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y -1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot1" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+   <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)" />
+      <param name="ang_noise" type="double" value="$(arg ang_noise)" />
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    
+  </group>
+
+
+  <!-- BEGIN ROBOT 2-->
+  <group ns="Robot2">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y -0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot2" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 3-->
+  <group ns="Robot3">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y 0.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot3" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+
+  
+<!-- BEGIN ROBOT 4-->
+  <group ns="Robot4">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y 0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot4" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 5-->
+  <group ns="Robot5">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y 1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot5" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>  
+  </group>
+  
+<!-- BEGIN ROBOT 6-->
+  <group ns="Robot6">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -0.5 -y -1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot6" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 7-->
+  <group ns="Robot7">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -0.5 -y -0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot7" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 8-->
+  <group ns="Robot8">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -0.5 -y 0.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot8" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+<!-- BEGIN ROBOT 9-->
+  <group ns="Robot9">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -0.5 -y 0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot9" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>  
+  </group>
+  
+<!-- BEGIN ROBOT 10-->
+  <group ns="Robot10">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -0.5 -y 1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot10" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+    <!-- BEGIN ROBOT 11-->
+  <group ns="Robot11">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.0 -y -1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot11" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+
+
+  <!-- BEGIN ROBOT 12-->
+  <group ns="Robot12">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.0 -y -0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot12" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>    
+  </group>
+  
+<!-- BEGIN ROBOT 13-->
+  <group ns="Robot13">
+      <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.0 -y 0.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot13" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+
+  
+<!-- BEGIN ROBOT 14-->
+  <group ns="Robot14">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.0 -y 0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot14" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    
+  </group>
+<!-- BEGIN ROBOT 15-->
+  <group ns="Robot15">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.0 -y 1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot15" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 16-->
+  <group ns="Robot16">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.5 -y -1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot16" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 17-->
+  <group ns="Robot17">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.5 -y -0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot17" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 18-->
+  <group ns="Robot18">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.5 -y 0.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot18" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+<!-- BEGIN ROBOT 19-->
+  <group ns="Robot19">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.5 -y 0.5 -z 0.0" />
+      <arg name="robot_name"  value="Robot19" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>   
+  </group>
+  
+<!-- BEGIN ROBOT 20-->
+  <group ns="Robot20">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x 0.5 -y 1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot20" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+    <node name="node_gen" pkg="ajh_swarm_slam" type="node_gen.py" output="log">
+      <param name="nodetime" type="double" value="$(arg nodetime)"/>
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+    </node>
+  </group>
+  
+  <node name="bagplay" pkg="rosbag"  type="play" output="screen" args="--pause $(find ajh_swarm_slam)/optimization/Data/(arg bag_file)/odom.bag" >
+  </node>
+
+  <node name="comm_graph" pkg="ajh_swarm_slam" type="swarm_graph.py" output="log">
+    <param name="com_dist" type="double" value="$(arg comm_range)"/>
+    <param name="team_size" type="double" value="$(arg team_size)"/>
+    <param name="nodetime" type="double" value="$(arg nodetime)"/>
+    <param name="det_range" type="double" value="$(arg det_range)"/>
+  </node>
+    
+  <node name="autojoy" pkg="ajh_swarm_slam" type="auto_joy.py" output="log" >
+  </node>   
+  
+  <node pkg="rosbag" type="record" name="rosbag_centralgraph"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=centralgraph.bag /central_graph" >
+  </node>
+  
+  <node pkg="rosbag" type="record" name="rosbag_slam"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=slam.bag /slam" >
+  </node>
+    
+  <node pkg="rosbag" type="record" name="rosbag_noisy_odom"
+       args="-o $(arg bag_save) --duration=$(arg duration) --output-name=noisy_odom.bag /Robot1/noisy_odom /Robot2/noisy_odom /Robot3/noisy_odom /Robot4/noisy_odom /Robot5/noisy_odom /Robot6/noisy_odom /Robot7/noisy_odom /Robot8/noisy_odom /Robot9/noisy_odom /Robot10/noisy_odom /Robot11/noisy_odom /Robot12/noisy_odom /Robot13/noisy_odom /Robot14/noisy_odom /Robot15/noisy_odom /Robot16/noisy_odom /Robot17/noisy_odom /Robot18/noisy_odom /Robot19/noisy_odom /Robot20/noisy_odom" >
+  </node>
+  
+
+</launch>

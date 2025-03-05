@@ -1,0 +1,64 @@
+<!-- -->
+<launch>
+  <param name="/use_sim_time" value="true" />
+ 
+  <!-- start world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find uri_soft_gazebo_differential_drive)/world/arena_20x20.world"/>
+    <arg name="paused" value="true"/>	
+    <!--arena_10x10_obstacles.world arena_10x10.world arena_20x20.world simple_house.world-->
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder
+                       '$(find uri_soft_gazebo_differential_drive)/urdf/differential_drive_cam_lidar_fisheyes.xacro'
+with_ydlidar:=true                       	
+with_cam:=false												
+yl_min_range:=0.05
+yl_max_range:=2.0
+yl_samples:=13
+yl_min_angle:=-1.4
+yl_max_angle:=1.4																					with_fisheyes:=false
+with_imu:=false
+											"/>
+ <!-- yl_max_angle:=5.4977 0.785-->
+ <arg name="lin_noise" default="0.0001"/> <!-- 0.5 0.05 -->
+ <arg name="ang_noise" default="0.0001"/> <!-- 0.2 0.02 -->
+ <arg name="comm_range" default="1.0"/>
+ <arg name="team_size" default="1"/>
+ <arg name="nodetime" default="3"/>
+ <arg name="det_range" default="1.5"/>
+ <arg name="controller" default="swarm_controller_joy.py"/> <!--auto_joy_controller.py  swarm_controller_joy.py auto_joy_follower.py  swarm_controller.py -->
+ <arg name="duration" default="179"/><!--5min:299 10min:599-->
+ <arg name="bag_save" default="$(find ajh_swarm_slam)/optimization/Data/Current"/>
+ <arg name="leader" default="1"/> <!-- 13 20 -->
+ <arg name="linvel" default="0.2"/>
+
+  <!-- BEGIN ROBOT 1-->
+  <group ns="Robot1">
+    <include file="$(find uri_soft_gazebo_differential_drive)/launch/single_differential_drive.launch" >
+      <arg name="init_pose" value="-x -1.0 -y -1.0 -z 0.0" />
+      <arg name="robot_name"  value="Robot1" />
+    </include>
+    <node name="motion" pkg="ajh_swarm_slam"  type="$(arg controller)" output="log">
+     <param name="team_size" type="double" value="$(arg team_size)"/>
+     <param name="leader" type="double" value="$(arg leader)"/>
+     <param name="linvel" type="double" value="$(arg linvel)"/>
+   </node>
+    <node name="odometry" pkg="generic_diff_drive_motion"  type="create_noisy_odom.py" output="log">
+      <param name="lin_noise" type="double" value="$(arg lin_noise)"/>
+      <param name="ang_noise" type="double" value="$(arg ang_noise)"/>
+      <param name="team_size" type="double" value="$(arg team_size)"/>
+	</node>
+  </group>
+
+
+  
+    
+  <node name="joystick" pkg="joy" type="joy_node" output="log" >
+  </node>
+  
+   
+  
+  
+
+</launch>

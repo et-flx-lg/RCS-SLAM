@@ -43,6 +43,7 @@ def main():
 	team = 2 if args.teamsize is None\
 		else args.teamsize
 	
+	
 	comm_bag = 'Data/' + folder + '/commgraph.bag'
 	#slam_bag = 'Data/' + folder + '/slam.bag'
 	central_bag = 'Data/' + folder + '/centralgraph.bag'
@@ -129,10 +130,11 @@ def main():
 								rob1 = 0
 								rob2 = 0
 								hop.write(edge1 + '\n')
-								#hop.write(edge2 + '\n')
+								hop.write(edge2 + '\n')
 								
 							graph[j,l] = 88.0; #This is to account for previous hops applied without adding additional direct comms. 88 is a completely random number.
 
+	
 	bag = bagreader('Data/' + folder + '/groundtruth.bag')
 	for t in bag.topics:
     		data = bag.message_by_topic(t)
@@ -163,7 +165,7 @@ def main():
         		new_name = 'Data/' + folder + '/bumps/Other.csv'
     		os.rename(original_csv_path, new_name)
         	
-    		print(f"Datei umbenannt: {original_csv_path} -> {new_name}")
+    		print(f"Datei umbenannt: {original_csv_path} -> {new_name}") 
     		
 
 	bag = bagreader('Data/' + folder + '/odom.bag')

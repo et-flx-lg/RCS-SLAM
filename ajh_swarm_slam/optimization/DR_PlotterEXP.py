@@ -33,6 +33,7 @@ import numpy as np
 import math
 from metrics import ATE, RPE
 from getTheta import getTheta
+import os
 
 
 def SlamProc (slamcsv, optcsv):
@@ -91,7 +92,8 @@ def main():
 	initial = 'Data/' + folder + '/cppgraph.csv'
 	noisy_bag_file = 'Data/' + folder + '/noisy_odom.bag' 
 
-	teamsize = 2
+	directory = "./Data/Current/bumps"
+	teamsize = len([f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))])
 
 	init = open(initial, 'r+')
 	#gt = open(groundtruth, 'r+')
@@ -168,6 +170,7 @@ def main():
 		step = int(len(gt)/nodes)
 		#print(gt[0,:])
 		for t in range(0,nodes):
+		
 			nodes_gt[t,i,0] = gt[(t*step),5] 
 			nodes_gt[t,i,1] = gt[(t*step),6] 
 			nodes_gt[t,i,2] = getTheta(gt[(t*step),8], gt[(t*step),9], gt[(t*step),10], gt[(t*step),11])

@@ -172,9 +172,11 @@ include_directories(
 #add_executable(CentGraphIneq20 src/CentGraph_Ineq_20.cpp)
 #add_executable(ToyModel6 src/ToyModel_6.cpp)
 add_executable(RCS_PGO20 src/RCS_PGO_20bots.cpp)
-add_executable(RCS_2botsEXP src/RCS_PGO_2botsEXP.cpp)
 add_executable(DR_PGO20 src/DR_PGO_20bots.cpp)
-add_executable(DR_2botsEXP src/DR_PGO_2botsEXP.cpp)
+
+add_executable(DR_EXP src/DR_EXP.cpp)
+add_executable(DRwM_EXP src/DR_EXPwMAP.cpp)
+add_executable(RCS_EXP src/RCS_EXP.cpp)
 
 
 
@@ -196,9 +198,16 @@ target_link_libraries(RCS_PGO20 gtsam)
 
 target_link_libraries(DR_PGO20 gtsam)
 
-target_link_libraries(DR_2botsEXP gtsam)
 
-target_link_libraries(RCS_2botsEXP gtsam)
+target_link_libraries(DR_EXP gtsam)
+
+target_link_libraries(DRwM_EXP gtsam)
+
+target_link_libraries(RCS_EXP gtsam)
+
+
+
+
 
 
 
